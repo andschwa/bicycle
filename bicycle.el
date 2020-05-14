@@ -73,6 +73,12 @@
   :group 'bicycle
   :type 'boolean)
 
+(defcustom bicycle-global-at-bobp nil
+  "Whether to cycle globally when at beginning of buffer."
+  :package-version '(bicycle . "0.1.0")
+  :group 'bicycle
+  :type 'boolean)
+
 ;;; Commands
 
 ;;;###autoload
@@ -80,9 +86,12 @@
   "Cycle local or global visibility.
 
 With a prefix argument call `bicycle-cycle-global'.
-Without a prefix argument call `bicycle-cycle-local'."
+Without a prefix argument call `bicycle-cycle-local'.
+
+If at beginning of buffer and `bicycle-global-at-bobp' call
+`bicycle-cycle-global'."
   (interactive "P")
-  (if global
+  (if (or global (and bicycle-global-at-bobp (bobp)))
       (bicycle-cycle-global)
     (bicycle-cycle-local)))
 
